@@ -129,25 +129,23 @@ const firebaseConfig = {
   var password = document.getElementById("password").value;
   var username = document.getElementById("username").value;
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      return user.updateProfile({
-        displayName: username
-      });
-    })
-    .then(() => {
-      const user = auth.currentUser;
-      console.log(user);
-      alert("Registration successful!!");
-      window.location.href = "login.html";
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorMessage);
-      alert(error);
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    await updateProfile(user, {
+      displayName: username
     });
+
+    console.log(user);
+    alert("Registration successful!!");
+    window.location.href = "login.html";
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorMessage);
+    alert(error);
+  }
 });
 
 
