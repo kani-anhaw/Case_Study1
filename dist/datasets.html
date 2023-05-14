@@ -318,8 +318,9 @@
     <a href="visual.html"class="icon-a"><i class="fa-solid fa-chart-simple icons"></i> &nbsp;&nbsp; Data Visualization</a>
 
     <div class="signout">
-      <a href="#"class="icon-a"><i class="fa-solid fa-right-from-bracket icons"></i> &nbsp;&nbsp; Sign Out</a>
+      <a id="signout" type="button"  class="out"><i class="fa-solid fa-right-from-bracket icons"></i> &nbsp;&nbsp; Sign Out</a>
     </div>
+    
     
   </div>
 
@@ -332,9 +333,8 @@
 
       <div class="col-div-6">
         <div class="profile">
-
           <img src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/48/1A1A1A/external-user-user-tanah-basah-glyph-tanah-basah-4.png" class="pro-img"/>
-
+          <span class="name" id="displayName"></span>
         </div>
       </div>
 
@@ -583,8 +583,9 @@
 
  <script type="module">
    
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getFirestore, setDoc, addDoc, doc, updateDoc,deleteDoc, getDoc, query, collection, where, getDocs, onSnapshot  } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-auth.js";
+import { getFirestore, setDoc, addDoc, doc, updateDoc,deleteDoc, getDoc, query, collection, where, getDocs, onSnapshot  } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-firestore.js";
 
 
 
@@ -600,7 +601,27 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
 console.log(app);
+
+
+
+//----- Logout code start	  
+document.getElementById("signout").addEventListener("click", function() {
+  signOut(auth).then(() => {
+    // Sign-out successful.
+    console.log('Sign-out successful.');
+    alert('Sign-out successful.');
+    document.getElementById('signout').style.display = 'none';
+    window.location.href = "index.html";
+
+  }).catch((error) => {
+    // An error happened.
+    console.log('An error happened.');
+  });		  		  
+});
+//----- End
+
 
 
 // ---------------------------------Add Data -------------------------//
@@ -616,7 +637,7 @@ window.AddData = function(){
       who_reg: document.getElementById("regAdd").value,
       cases: document.getElementById("caseAdd").value,
       death: document.getElementById("deathAdd").value,
-      //$('#addData').modal('hide');
+
 
     })
       console.log(`Create new user: ${newUser.id}`)
@@ -753,59 +774,18 @@ window.DelButt = async function(id) {
 
 
 
-
-// var DelBtn = document.querySelector("#delButton");
-// window.DelButt = function(id, docId) {
-//   --id;
-//   DelBtn.dataset.id = docId;
-// };
-
-// const deleteButt = document.querySelector("#delButton")
-// deleteButt.addEventListener("click", async () =>{
-//   try {
-//     const docRef = doc(db, "covid", DelBtn.dataset.id);
-//     const docSnap = await getDoc(docRef);
-//     if (docSnap.exists()) {
-//       await deleteDoc(docRef);
-//       setData(data.filter((item)=> item.id !==id));
-      
-//     }
-//     console.log(doc.id)
-//     const delDataModal = document.getElementById('deleteModal');
-//     const modal = bootstrap.Modal.getInstance(delDataModal);
-//     modal.hide();
-//   } catch (error) {
-//     console.log(error)
-//   }
-// });
+//-----------------------------------------------------Profile username
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("Authenticated user:", user);
+    const displayName = user.displayName;
+    const displayNameElement = document.getElementById("displayName");
+    displayNameElement.textContent = displayName;
+  } else {
+    console.log("User is not authenticated");
+  }
+});
 
 
-
-
-
-
-// var DelBtn = document.querySelector("#delButton");
-// window.DelButt = function(id, docId) {
-//   --id;
-//   DelBtn.dataset.id = docId;
-// };
-
-// const deleteButt = document.querySelector("#delButton")
-// deleteButt.addEventListener("click", async () =>{
-//   try {
-//     const docRef = doc(db, "covid", DelBtn.dataset.id);
-//     const docSnap = await getDoc(docRef);
-//     if (docSnap.exists()) {
-//       await deleteDoc(docRef);
-//       setData(data.filter((item)=> item.id !== DelBtn.dataset.dataNo));
-//       console.log(doc.id)
-//     } 
-//     const delModal = document.getElementById('deleteModal');
-//     const modal = bootstrap.Modal.getInstance(delModal);
-//     modal.hide();
-//   } catch (error) {
-//     console.log(error)
-//   }
-// });
 
 </script>

@@ -97,7 +97,14 @@ img {
   display: inline-block;
   float: right;
   width: 160px;
+  display: flex;
+  align-items: center;
 }
+
+.name {
+  margin-left: 10px;
+}
+
 .pro-img{
   float: right;
   width: 40px;

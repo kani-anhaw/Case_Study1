@@ -18,7 +18,7 @@
     <div class="form-container">
       <div class="logreg">
 
-        <form action="" class="form">
+        <div class="page form">
 
           <h2 class="title">Let's get started!</h2>
 
@@ -30,23 +30,25 @@
           </div>
 
           <p>or make your own account to sign up</p>
+       
 
-          <div class="input">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" name="username" id="username" placeholder="username">
-          </div>
-          <div class="input">
-            <i class="fa-solid fa-envelope"></i>
-            <input type="email" name="email" id="email" placeholder="email">
-          </div>
-          <div class="input">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" name="password" id="password" placeholder="password">
-          </div>
+            <div class="input">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" name="username" id="username" placeholder="username">
+            </div>
+            <div class="input">
+              <i class="fa-solid fa-envelope"></i>
+              <input type="email" name="email" id="email" placeholder="email">
+            </div>
+            <div class="input">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" name="password" id="password" placeholder="password">
+            </div>
 
           <button id="signup" type="submit" class="btn solid">Sign Up</button>
+       
 
-        </form>
+        </div>
       </div>
     </div>
 
@@ -73,7 +75,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword, OAuthProvider, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-auth.js";
+import { getAuth, updateProfile, createUserWithEmailAndPassword, OAuthProvider, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-auth.js";
 import { getFirestore, connectFirestoreEmulator, addDoc, collection } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-firestore.js";
 
 
@@ -99,24 +101,55 @@ const firebaseConfig = {
   
   //AUTHENTICATION
   
+  // document.getElementById("signup").addEventListener("click", async function() {
+  //   var email =  document.getElementById("email").value;
+  //   var password = document.getElementById("password").value;
+  //   var username = document.getElementById("username").value;
+  
+  
+  //   createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+  //     const user = userCredential.user;
+  //     user.updateProfile({
+  //     displayName: username
+  //   })
+  //     console.log(user);
+  //     alert("Registration successful!!");
+  //     window.location.href = "login.html";
+  //   })
+  //   .catch((error) => {
+  //     const errorCode = error.code;
+  //     const errorMessage = error.message;
+  //     console.log(errorMessage);
+  //     alert(error);
+  //   });		  		  
+  // });
+
   document.getElementById("signup").addEventListener("click", async function() {
-    var email =  document.getElementById("email").value;
-    var password = document.getElementById("password").value;
-  
-  
-    createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+  var username = document.getElementById("username").value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
       const user = userCredential.user;
+      return user.updateProfile({
+        displayName: username
+      });
+    })
+    .then(() => {
+      const user = auth.currentUser;
       console.log(user);
       alert("Registration successful!!");
-      window.location.href = "index.html";
+      window.location.href = "login.html";
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(errorMessage);
       alert(error);
-    });		  		  
-  });
+    });
+});
+
 
 
   //********************************************************GOOGLE
@@ -214,6 +247,28 @@ const firebaseConfig = {
       })
   })
 
+
+  // ------------------------------------Save to Database paras profile
+
+  const AddBtn = document.querySelector("#signup")
+  AddBtn.addEventListener("click", async () =>{
+  try {
+    const collectionRef = collection(db, "user")
+    const newUser = await addDoc(collectionRef,{
+
+     username: username,
+     email: email,
+     password: password
+
+
+    })
+      console.log(`Create new user: ${newUser.id}`)
+      const addDataModal = document.getElementById('addData');
+      const modal = bootstrap.Modal.getInstance(addDataModal);
+      modal.hide();
+    } catch (error) { console.log(error) }
+  }
+);
 
   
   </script>

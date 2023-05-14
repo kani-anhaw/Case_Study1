@@ -17,15 +17,17 @@
 
     <div class="form-container">
       <div class="logreg">
-        <form action="" class="form">
+        <div class="page form">
 
           <h2 class="title">Welcome back!</h2>
 
           <div class="socialcon">
+       
             <button id="fb" class="social"><i class="fa-brands fa-facebook-f"></i></button>
             <button id="git" class="social"><i class="fa-brands fa-github"></i></button>
             <button id="gog" class="social"><i class="fa-brands fa-google"></i></button>
             <button id="ms" class="social"><i class="fa-brands fa-windows"></i></button>
+          
           </div>
 
           <p>or sign in with your existing email and password</p>
@@ -39,9 +41,9 @@
             <input type="password" name="password" id="password" placeholder="enter your password">
           </div>
 
-          <button id="login" type="submit" class="btn solid">  Sign In</button>
+          <button id="login" type="button" class="btn solid">  Sign In</button>
 
-        </form>
+        </div>
       </div>
     </div>
 
@@ -69,7 +71,7 @@
   
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-analytics.js";
-  import { getAuth, signInWithEmailAndPassword, OAuthProvider, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, OAuthProvider, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-auth.js";
   import { getFirestore, collection, addDoc, connectFirestoreEmulator } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-firestore.js";
   
 
@@ -93,7 +95,7 @@ const firebaseConfig = {
   const providerFB = new FacebookAuthProvider(app);
   const providerGithub = new GithubAuthProvider(app);
   const providerMS = new OAuthProvider('microsoft.com');
-  // connectFirestoreEmulator(db, 'localhost', 8080);
+  connectFirestoreEmulator(db, 'localhost', 8080);
   
         
   document.getElementById("login").addEventListener("click", function() {
@@ -109,7 +111,6 @@ const firebaseConfig = {
   })
           .catch((error) => {
             const errorCode = error.code;
-  
             const errorMessage = error.message;
             console.log(errorMessage);
             alert(errorMessage);
@@ -211,5 +212,12 @@ const firebaseConfig = {
      
       })
   })
+
+
+
+
+
+
+
         </script>
   

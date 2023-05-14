@@ -51,7 +51,7 @@ body, input, button{
   z-index: 5;
 }
 
-form{
+.page{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,7 +61,7 @@ form{
   padding: 0 5rem;
   overflow: hidden;
 }
-form.form{
+.page.form{
   z-index: 2;
 }
 

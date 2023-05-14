@@ -26,7 +26,7 @@
     <a href="visual.html"class="icon-a"><i class="fa-solid fa-chart-simple icons"></i> &nbsp;&nbsp; Data Visualization</a>
 
     <div class="signout">
-      <a id="signout" class="out"><i class="fa-solid fa-right-from-bracket icons"></i> &nbsp;&nbsp; Sign Out</a>
+      <a id="signout" type="button" class="out"><i class="fa-solid fa-right-from-bracket icons"></i> &nbsp;&nbsp; Sign Out</a>
     </div>
     
   </div>
@@ -38,11 +38,17 @@
         <span  id="overview" style="font-size: 35px; cursor: pointer; font-weight: bold;" > Overview </span>
       </div>
 
-      <div class="col-div-6">
+      <!-- <div class="col-div-6">
         <div class="profile">
 
           <img src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/48/1A1A1A/external-user-user-tanah-basah-glyph-tanah-basah-4.png" class="pro-img"/>
 
+        </div>
+      </div> -->
+      <div class="col-div-6">
+        <div class="profile">
+          <img src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/48/1A1A1A/external-user-user-tanah-basah-glyph-tanah-basah-4.png" class="pro-img"/>
+          <span class="name" id="displayName"></span>
         </div>
       </div>
 
@@ -75,8 +81,6 @@
         <i class="fa-solid fa-chart-line box-icon" style="color: #004d0d;"></i>
       </div>
     </div>
-    
-
     
 
     <div class="col-div-3">
@@ -172,9 +176,8 @@
 <script type="module">  
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-app.js";
-  // import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-analytics.js";
-  import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-auth.js";
-  import { connectFirestoreEmulator, getCountFromServer, getFirestore, setDoc, addDoc, doc, updateDoc,deleteDoc, getDoc, query, collection, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-firestore.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-auth.js";
+  import { connectFirestoreEmulator, orderBy, limit, getFirestore, setDoc, addDoc, doc, updateDoc,deleteDoc, getDoc, query, collection, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-firestore.js";
   
   
   
@@ -208,10 +211,6 @@ const firebaseConfig = {
     }
   });
 });
-
-
-
-
 
 const collectionRef = collection(db, 'covid');
 const queryRef = query(collectionRef);
@@ -268,7 +267,7 @@ function formatNumber(num) {
   });
 
 
-  //---------------------------------Total case of the worlds population
+  //---------------------------------Total case of the world population
   getDocs(queryRef)
   .then((querySnapshot) => {
     let totalCases = 0;
@@ -286,11 +285,11 @@ function formatNumber(num) {
     if (covidPercentageElement) {
       covidPercentageElement.innerHTML = covidPercentageDisplay;
     } else {
-      console.error("Element with id 'covid-percentage' not found");
+      console.error();
     }
   })
   .catch((error) => {
-    console.log('Error getting world population data:', error);
+    console.log(error);
   });
 
 
@@ -298,15 +297,13 @@ function formatNumber(num) {
     //----- Logout code start	  
     document.getElementById("signout").addEventListener("click", function() {
       signOut(auth).then(() => {
-        // Sign-out successful.
         console.log('Sign-out successful.');
         alert('Sign-out successful.');
         document.getElementById('signout').style.display = 'none';
         window.location.href = "index.html";
   
       }).catch((error) => {
-        // An error happened.
-        console.log('An error happened.');
+        console.log(error);
       });		  		  
     });
     //----- End
@@ -319,14 +316,12 @@ var tbody = document.getElementById('tbody1');
 
 function AddItemToTable(country, who_reg, cases, death, id){
   var trow = document.createElement('tr');
-  // var td0 = document.createElement('td'); 
   var td1 = document.createElement('td');
   var td2 = document.createElement('td');
   var td3 = document.createElement('td');
   var td4 = document.createElement('td');
   var td5 = document.createElement('td');
 
-  // td0.innerHTML = ''; 
   td1.innerHTML = ++dataNo;
   td2.innerHTML = country;
   td3.innerHTML = who_reg;
@@ -334,16 +329,13 @@ function AddItemToTable(country, who_reg, cases, death, id){
   td5.innerHTML = death;
   datasets.push([country, who_reg, cases, death, id]);
 
-  // trow.appendChild(td0); 
   trow.appendChild(td1);
   trow.appendChild(td2);
   trow.appendChild(td3);
   trow.appendChild(td4);
   trow.appendChild(td5);
 
-
   tbody.appendChild(trow);
-
 }
 
 
@@ -356,28 +348,35 @@ function populateTableList(UserDocList){
   })
 }
 
-function GetAllDataRealtime(){
-  const q = query(collection(db, "covid"))
-  const list = onSnapshot(q, (querySnapshot) => {
-     var datasetss = [];
-     let count = 0;
 
-    querySnapshot.forEach(doc => {
-      if (count >= 4) {
-        return; // exit loop after 3 iterations
-      }
+function GetAllDataRealtime() {
+  const q = query(collection(db, "covid"), orderBy("cases", "desc"), limit(4));
+  const list = onSnapshot(q, (querySnapshot) => {
+    var datasetss = [];
+    querySnapshot.forEach((doc) => {
       const data = doc.data();
-      datasetss.push({...data, id: doc.id}); 
-      console.log(doc.id)
-      count++;
-    })
-    datasetss.sort((a, b) => (a.country > b.country) ? 1 : -1);
-    populateTableList(datasetss)
-  })
+      datasetss.push({ ...data, id: doc.id });
+      console.log(doc.id);
+    });
+    populateTableList(datasetss);
+  });
 }
 
-
 window.onload = GetAllDataRealtime;
+
+
+
+//-----------------------------------------------------Profile username
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("Authenticated user:", user);
+    const displayName = user.displayName;
+    const displayNameElement = document.getElementById("displayName");
+    displayNameElement.textContent = displayName;
+  } else {
+    console.log("User is not authenticated");
+  }
+});
 
 
     </script>
