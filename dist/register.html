@@ -100,30 +100,6 @@ const firebaseConfig = {
   
   
   //AUTHENTICATION
-  
-  // document.getElementById("signup").addEventListener("click", async function() {
-  //   var email =  document.getElementById("email").value;
-  //   var password = document.getElementById("password").value;
-  //   var username = document.getElementById("username").value;
-  
-  
-  //   createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-  //     const user = userCredential.user;
-  //     user.updateProfile({
-  //     displayName: username
-  //   })
-  //     console.log(user);
-  //     alert("Registration successful!!");
-  //     window.location.href = "login.html";
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     console.log(errorMessage);
-  //     alert(error);
-  //   });		  		  
-  // });
-
   document.getElementById("signup").addEventListener("click", async function() {
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
@@ -245,28 +221,6 @@ const firebaseConfig = {
       })
   })
 
-
-  // ------------------------------------Save to Database paras profile
-
-  const AddBtn = document.querySelector("#signup")
-  AddBtn.addEventListener("click", async () =>{
-  try {
-    const collectionRef = collection(db, "user")
-    const newUser = await addDoc(collectionRef,{
-
-     username: username,
-     email: email,
-     password: password
-
-
-    })
-      console.log(`Create new user: ${newUser.id}`)
-      const addDataModal = document.getElementById('addData');
-      const modal = bootstrap.Modal.getInstance(addDataModal);
-      modal.hide();
-    } catch (error) { console.log(error) }
-  }
-);
 
   
   </script>

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap');
 
 :root{--blue:#006994;}
 
@@ -33,8 +34,9 @@ img {
   color: var(--blue);
 }
 
+/*bago ang sidenav every page daeee*/
 .sidenav{
-  background: rgba(0, 0, 0, 0.1);
+  background: white;
   backdrop-filter: blur(15px);
   padding-top: 30px;
   width: 300px;
@@ -46,11 +48,11 @@ img {
   transition: 0.3s ease;
   transition-property: left;
   border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   white-space: nowrap;
   z-index: 1;
 }
 .sidenav a{
+  cursor: pointer;
   font-family: 'Poppins', sans-serif;
   position: relative;
   font-weight: bold;
@@ -93,22 +95,24 @@ img {
 
 .profile{
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
   display: inline-block;
   float: right;
-  width: 160px;
   display: flex;
   align-items: center;
 }
 
-.name {
+.profile p{
+  position: relative;
   margin-left: 10px;
+  text-transform: capitalize;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 0.8rem;
 }
 
 .pro-img{
   float: right;
-  width: 40px;
-  margin: 0px;
+  width: 35px;
 }
 
 .col-div-3{
@@ -173,16 +177,16 @@ img {
 }
 
 .content-box{
-  font-size: bold;
 	padding: 20px;
 }
-.box-4 .content-box p{
+.box-4 .content-box strong, .box-8 .content-box strong{
+  text-transform: lowercase;
+  font-family: 'Carrois Gothic SC', sans-serif;
+  font-size: 1rem;
+}
+.box-4 .content-box p, .box-8 .content-box p{
   margin: 0;
   font-size: 0.8rem;
-}
-.box-8 .content-box p{
-	margin: 0;
-  font-size: 0.9rem;
 }
 .content-box p span{
 	float: right;
@@ -190,7 +194,7 @@ img {
   color: black;
   border-radius: 8px;
   padding: 3px 10px;
-  font-size: 15px;
+  font-size: 11px;
   transition: 0.5s ease;
 }
 .content-box p span:hover{
@@ -211,11 +215,21 @@ table, td, th {
 }
 
 thead th{
+  font-family: 'Poppins', sans-serif;
+  font-weight: bolder;
   position: sticky;
 	top: 0;
 	left: 0;
 	background-color: #fff6;
 }
+
+/*bago pod ni niya*/
+tbody td:first-child{
+  padding: 1rem 0rem;
+  padding-left: 1rem;
+  color: #012169;
+}
+
 td img{
 	width: 36px;
 	height: 36px;
@@ -235,27 +249,28 @@ tbody tr:hover{
 	box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
 }
 
+/*bago pod ni siya daeee*/
 .circle-wrap {
-  margin: 50px auto;
-  width: 150px;
-  height: 150px;
+  margin: 40px auto;
+  width: 200px;
+  height: 200px;
   background: #fff;
   border-radius: 50%;
 }
 .circle-wrap .circle .mask,
 .circle-wrap .circle .fill {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   position: absolute;
   border-radius: 50%;
 }
 .circle-wrap .circle .mask {
-  clip: rect(0px, 150px, 150px, 75px);
+  clip: rect(0px, 200px, 200px, 75px);
 }
 
 .circle-wrap .circle .mask .fill {
-  clip: rect(0px, 75px, 150px, 0px);
-  background-color: var(--blue);
+  clip: rect(0px, 75px, 200px, 0px);
+  background-color: #012169;
 }
 .circle-wrap .circle .mask.full,
 .circle-wrap .circle .fill {
@@ -272,11 +287,11 @@ tbody tr:hover{
   }
 }
 .circle-wrap .inside-circle {
-  width: 130px;
-  height: 130px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  background: #e6e2e7;
-  line-height: 130px;
+  background: var(--blue);
+  line-height: 180px;
   text-align: center;
   margin-top: 10px;
   margin-left: 10px;
